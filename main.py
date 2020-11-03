@@ -55,7 +55,8 @@ while True:
                                 description=f"[Product Link]({url}/products/{product['handle']})",
                                 color=242424)
 
-            embed.set_image(url=product['images'][0]['src'])
+            if product['images'][0]:
+                embed.set_image(url=product['images'][0]['src'])
 
             atc_links = ""
             for variant in product['variants']:
