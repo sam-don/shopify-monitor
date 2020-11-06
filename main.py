@@ -1,3 +1,4 @@
+import sys
 import requests
 import time
 import os
@@ -5,13 +6,26 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 from dotenv import load_dotenv
 load_dotenv()
 
-WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK")
+url = ''
+webhook_url = ''
 
-webhook = DiscordWebhook(url=WEBHOOK_URL)
+if __name__ == '__main__':
+    for i, arg in enumerate(sys.argv):
+        if arg == '-u':
+            url = sys.argv[i+1]
+        if arg == '-d':
+            webhook_url = sys.argv[i+1]
+
+if not webhook_url:
+    webhook_url = os.getenv("DISCORD_WEBHOOK")
+
+webhook = DiscordWebhook(url=webhook_url)
 
 # URL of Shopify store to monitor
-url = 'https://happyvalleyshop.com/collections/vinyl/'
 
+if not url:
+    url = input("Enter shopify website url to monitor: ")
+    
 # Add required url bits if necessary
 if 'https' not in url:
     url = 'https://' + url
