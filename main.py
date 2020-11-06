@@ -42,10 +42,15 @@ headers = {
 
 print("Starting Shopify Monitor...")
 
-r = requests.get(shopify_url, headers=headers)
+try:
+    r = requests.get(shopify_url, headers=headers)
 
-# Initial list of products, the next request will compare against this
-old_product_list = r.json()['products']
+    # Initial list of products, the next request will compare against this
+    old_product_list = r.json()['products']
+
+except Exception as error:
+    print("Something went wrong, is the url correct?", error)
+    
 
 while True:
     # 5 minute wait between requests, to avoid being blocked by bot prevention
