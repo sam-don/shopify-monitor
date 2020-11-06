@@ -10,7 +10,7 @@ WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK")
 webhook = DiscordWebhook(url=WEBHOOK_URL)
 
 # URL of Shopify store to monitor
-url = 'culturekings.com'
+url = 'https://happyvalleyshop.com/collections/vinyl/'
 
 # Add required url bits if necessary
 if 'https' not in url:
@@ -26,14 +26,12 @@ headers = {
     'Connection': 'keep-alive'
 }
 
-r = requests.get(shopify_url, headers=headers)
-
 print("Starting Shopify Monitor...")
+
+r = requests.get(shopify_url, headers=headers)
 
 # Initial list of products, the next request will compare against this
 old_product_list = r.json()['products']
-
-
 
 while True:
     # 5 minute wait between requests, to avoid being blocked by bot prevention
@@ -67,7 +65,7 @@ while True:
             # These links automatically add one of the product variant to the cart and takes the user to checkout
             atc_links = ""
             for variant in product['variants']:
-                atc_links += f"[ [{variant['title']}]({url}cart/{variant['id']}:1) ]"
+                atc_links += f"[ [{variant['title']} - ${variant['price']}]({url}cart/{variant['id']}:1) ]"
             
             embed.add_embed_field(
                 name="ATC Links", 
